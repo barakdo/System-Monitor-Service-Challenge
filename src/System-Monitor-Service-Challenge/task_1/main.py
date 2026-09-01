@@ -5,10 +5,11 @@ from presentation_service import PresentationService
 def main():
   #main thread
 
+  requested_parameters = {}
   event = threading.Event()
 
   #Initialze Collection Service
-  cs = CollectionService()
+  cs = CollectionService(requested_parameters)
 
   #Initialze Presentation Service
   ps = PresentationService()
@@ -24,3 +25,5 @@ def main():
     #stopping threads
     cs.stop()
     ps.stop()
+    cs.join()
+    ps.join()
