@@ -16,10 +16,9 @@ class CollectionService(BaseService):
           data_dict[item] = psutil_dict[item]()
     return data_dict
 
+
   def run_service(self):
     system_data = self.collect_system_data()
     system_data_json = convert_to_json(system_data)
-    with self._condition:
-      self._q.put(system_data_json)
-      self._condition.notify()
+    self.write_to_queue(system_data_json)
     time.sleep(self.__sampling_interval)

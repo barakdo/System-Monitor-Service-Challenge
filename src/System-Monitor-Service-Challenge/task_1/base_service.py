@@ -2,8 +2,8 @@ import threading
 from queue import Queue
 
 class BaseService(threading.Thread):
-  _condition = threading.Condition()
-  _q = Queue()
+  __condition = threading.Condition()
+  __q = Queue()
 
   def __init__(self):
     super().__init__()
@@ -17,6 +17,16 @@ class BaseService(threading.Thread):
 
   def stop(self):
     self.__stop.set()
+
+  def read_from_queue(self):
+    with self.__condition:
+      self.__condition.wait_for(not self.__q.empty())
+      return self.__q.get()
+
+  def write_to_queue(self, item):
+      with self.__condition:
+        self.__q.put(item)
+        self.__condition.notify()
 
   #abstract method
   def run_service(self): 
