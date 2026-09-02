@@ -6,15 +6,19 @@ class BaseService(threading.Thread):
   _q = Queue()
 
   def __init__(self):
-    pass
+    super().__init__()
+    self.__stop = threading.Event()
 
   def run(self):
-    pass
+    while True:
+      if self.__stop.is_set():
+        break
+      self.run_service()
 
   def stop(self):
-    pass
+    self.__stop.set()
 
   #abstract method
-  def run_service(): 
+  def run_service(self): 
     raise NotImplementedError("run_service method does not implemented for this sub service")
 

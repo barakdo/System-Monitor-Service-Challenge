@@ -27,3 +27,4 @@ def main():
     ps.stop()
     cs.join()
     ps.join()
+    print("All threads stopped")
