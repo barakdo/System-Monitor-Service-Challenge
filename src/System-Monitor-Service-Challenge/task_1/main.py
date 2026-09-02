@@ -2,10 +2,11 @@ import threading
 from collection_service import CollectionService
 from presentation_service import PresentationService
 
+
 def main():
   #main thread
 
-  requested_parameters = {}
+  requested_parameters = {"CPU usage":True, "RAM usage": True}
   event = threading.Event()
 
   #Initialze Collection Service

@@ -1,21 +1,25 @@
 from base_service import BaseService
+from helpers.collection_helper import psutil_dict, extract_relevant_parameters, convert_to_json
+import time
 
 class CollectionService(BaseService):
 
-  def __init__(self, requested_parameters:dict):
-    pass
+  def __init__(self, requested_parameters:dict, sampling_interval:float = 1.0):
+    super().__init__()
+    self.__requested_parameters = extract_relevant_parameters(requested_parameters)
+    self.__sampling_interval = sampling_interval
 
-  def define_requested_parameters(self, para:dict):
-    pass
-
-  def collect_system_data(self):
-    pass
-
-  def convert_to_json(self, system_data) -> str:
-    pass
-
-  def send_to_queue(self, json_data:str):
-    pass
+    
+  def collect_system_data(self) -> dict:
+    data_dict = {}
+    for item in self.__requested_parameters:
+          data_dict[item] = psutil_dict[item]()
+    return data_dict
 
   def run_service(self):
-    pass
+    system_data = self.collect_system_data()
+    system_data_json = convert_to_json(system_data)
+    with self._condition:
+      self._q.put(system_data_json)
+      self._condition.notify()
+    time.sleep(self.__sampling_interval)
