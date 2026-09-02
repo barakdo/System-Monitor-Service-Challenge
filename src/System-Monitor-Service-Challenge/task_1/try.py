@@ -1,8 +1,9 @@
-import time
-import psutil
-import os
 
-for i in range(10000):
-  print("CPU usage: ",psutil.cpu_percent(interval=2),"%")
-  print("RAM usage: ", psutil.virtual_memory().percent,"%")
+d = {"c":True, 
+     "b": False}
 
+lst = ["a"]
+
+print(lst[0])
+if lst[0] not in d:
+  print("aaa")

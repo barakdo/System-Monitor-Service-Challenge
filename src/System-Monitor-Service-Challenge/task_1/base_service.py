@@ -17,12 +17,16 @@ class BaseService(threading.Thread):
 
   def stop(self):
     self.__stop.set()
+    with self.__condition:
+      self.__condition.notify()
 
   def read_from_queue(self):
     with self.__condition:
-      self.__condition.wait_for(not self.__q.empty())
+      self.__condition.wait_for(lambda:not self.__q.empty() or self.__stop.is_set())
+      if  self.__q.empty():
+        return None
       return self.__q.get()
-
+    
   def write_to_queue(self, item):
       with self.__condition:
         self.__q.put(item)

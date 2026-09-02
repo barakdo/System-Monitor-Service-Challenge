@@ -6,7 +6,7 @@ from presentation_service import PresentationService
 def main():
   #main thread
 
-  requested_parameters = {"CPU usage":True, "RAM usage": True}
+  requested_parameters = {"CPU_usage":True, "RAM_usage":True}
   event = threading.Event()
 
   #Initialze Collection Service
@@ -24,11 +24,12 @@ def main():
     event.wait()
   except KeyboardInterrupt:
     #stopping threads
+    
     cs.stop()
     ps.stop()
     cs.join()
     ps.join()
-    print("All threads stopped")
+    print("\nAll threads stopped")
 
 if __name__ == '__main__':
   main()

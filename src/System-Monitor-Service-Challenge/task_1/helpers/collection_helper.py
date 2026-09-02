@@ -20,14 +20,14 @@ psutil_dict = {
 ######################
 #helper functions
 
-def validate_parameters(requested_parameters_list):
-  for item in requested_parameters_list:
+def validate_parameters(requested_parameters:list):
+  for item in requested_parameters:
     if item not in psutil_dict:
       raise Exception(f"Requested parameter [{item}] is not supported yet!")
 
 def extract_relevant_parameters(parameters:dict) -> list:
     requested_parameters_list = []
-    for key, value in parameters:
+    for key, value in parameters.items():
       if value == True:
         requested_parameters_list.append(key)
     validate_parameters(requested_parameters_list)
