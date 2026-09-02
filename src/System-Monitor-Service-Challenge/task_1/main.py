@@ -28,3 +28,6 @@ def main():
     cs.join()
     ps.join()
     print("All threads stopped")
+
+if __name__ == '__main__':
+  main()
