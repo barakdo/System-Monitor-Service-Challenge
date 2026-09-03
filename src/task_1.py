@@ -1,7 +1,6 @@
 import threading
-from collection_service import CollectionService
-from presentation_service import PresentationService
-
+from logic.collection_service import CollectionService
+from logic.presentation_service import PresentationService
 
 def main():
   #main thread
