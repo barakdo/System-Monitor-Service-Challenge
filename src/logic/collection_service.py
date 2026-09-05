@@ -2,7 +2,9 @@ from .base_service import BaseService
 from .helpers.collection_helper import extract_relevant_parameters
 from .helpers.json_helper import dict_to_json
 from .helpers.psutil_helper import psutil_dict
+from .helpers.user_preferences import sampling_interval, sliding_window_size
 import time
+import datetime
 
 class CollectionService(BaseService):
 
@@ -14,6 +16,13 @@ class CollectionService(BaseService):
     
   def collect_system_data(self) -> dict:
     data_dict = {}
+    if sampling_interval >= 1:
+      data_dict["Time"] = datetime.datetime.now().strftime("%H:%M:%S")
+    else:
+      data_dict["Time"] = datetime.datetime.now().strftime("%H:%M:%S:%f")[:-5]
+    if sliding_window_size > 15:
+       data_dict["Time"] = data_dict["Time"][3:]
+
     for item in self.__requested_parameters:
           item_value = psutil_dict[item]()
           if not isinstance(item_value,(float, int)):

@@ -4,6 +4,7 @@ from queue import Queue
 class BaseService(threading.Thread):
   _condition = threading.Condition()
   _q = Queue()
+  _received_sample_first_time = threading.Event()
 
   def __init__(self):
     super().__init__()

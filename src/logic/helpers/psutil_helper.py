@@ -14,3 +14,8 @@ psutil_dict = {
   "CPU_usage": sample_cpu,
   "RAM_usage" : sample_ram
 }
+
+unit_dict ={
+  "CPU_usage": "%",
+  "RAM_usage" :"GB"
+}

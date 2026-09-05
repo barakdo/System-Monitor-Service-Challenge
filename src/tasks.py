@@ -3,8 +3,11 @@ from .logic.collection_service import CollectionService
 from .logic.presentation_service import PresentationService
 from .logic.ui_service import UIService
 from .logic.helpers.user_preferences import parameters_dict, sampling_interval
+from .logic.helpers.user_preferences import task_number, sliding_window_size, sampling_interval
+import time
 
-def task(task=1):
+
+def task():
 
   requested_parameters = parameters_dict
   event = threading.Event()
@@ -13,10 +16,10 @@ def task(task=1):
   cs = CollectionService(requested_parameters, sampling_interval=sampling_interval)
 
   #Initialze Presentation Service
-  if task==1:
+  if task_number==1:
     ps = PresentationService()
   else:
-    ps = UIService()
+    ps = UIService(sliding_window_size)
 
   # starting threads
   cs.start()
@@ -24,12 +27,14 @@ def task(task=1):
 
   #running until user press ctrl+c
   try:
+    if task_number == 2:
+      ps.print_graphs()
     event.wait()
   except KeyboardInterrupt:
     #stopping threads
-    
     cs.stop()
     ps.stop()
     cs.join()
     ps.join()
     print("\nAll threads stopped")
+
