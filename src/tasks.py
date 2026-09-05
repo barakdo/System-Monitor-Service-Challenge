@@ -2,12 +2,10 @@ import threading
 from .logic.collection_service import CollectionService
 from .logic.presentation_service import PresentationService
 from .logic.ui_service import UIService
-from .logic.helpers.user_preferences import task_number, sliding_window_size, sampling_interval, parameters_dict, validate_user_preferences
-import time
+from preferences import task_number, sliding_window_size, sampling_interval, parameters_dict
 
 
 def task():
-  validate_user_preferences()
 
   requested_parameters = parameters_dict
   event = threading.Event()

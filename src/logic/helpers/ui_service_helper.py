@@ -1,6 +1,8 @@
 import matplotlib.pyplot as plt
 from .psutil_helper import unit_dict
 import threading
+import matplotlib.patheffects as pe
+from preferences import points_value_label
 
 
 ################################################
@@ -49,6 +51,11 @@ def create_graph(system_data:dict):
   return fig, axs
 
 
+def add_values_on_points(ax,key:list,value:list):
+    for x,y in zip(key, value):                                       # <--
+            ax.text(x, y, y, fontsize=16, fontweight='bold',verticalalignment='center',horizontalalignment='center',color="white",path_effects=[pe.withStroke(linewidth=2, foreground="black")])
+    
+
 def update_graph(system_data, axs):
   count = 0
   for key,value in system_data.items():
@@ -60,11 +67,17 @@ def update_graph(system_data, axs):
       ax.clear()
       ax.set_title(key)
       ax.set_xlabel('Time', fontsize=16)   
-      ax.plot(system_data["Time"], value)
+      lines = ax.plot(system_data["Time"], value)
       y_label = ax.get_yticklabels()
       float_values = [label.get_position()[1] for label in y_label]
       modified_y_labels = [label.get_text() + unit_dict[key] for label in y_label]
       ax.set_yticks(float_values)
       ax.set_yticklabels(modified_y_labels)
+      if points_value_label:
+        add_values_on_points(ax,system_data["Time"], value)
+      
       count+=1
   plt.pause(0.1)
+
+
+  

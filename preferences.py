@@ -12,3 +12,11 @@ parameters_dict={
   "CPU_usage":True,
   "RAM_usage":True
 }
+
+
+################################################
+#unique setting for task_2
+################################################
+
+#set "True" for displaying points value on task_2 graph
+points_value_label = True

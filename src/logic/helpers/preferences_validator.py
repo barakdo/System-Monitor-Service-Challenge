@@ -1,5 +1,6 @@
 from preferences import *
 
+
 def validate_user_preferences():
   if task_number not in [1,2]:
     raise ValueError("<task_number> must be set to 1 or 2")
@@ -11,4 +12,6 @@ def validate_user_preferences():
      raise ValueError("<parameters_dict> must be a dict")
   if parameters_dict == {}:
      raise ValueError("<parameters_dict> must contains at least one parameter")
+  if points_value_label not in [True, False]:
+     raise ValueError("<points_value_label> must be a bool")
   

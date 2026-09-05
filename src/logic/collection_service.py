@@ -2,7 +2,7 @@ from .base_service import BaseService
 from .helpers.collection_helper import extract_relevant_parameters
 from .helpers.json_helper import dict_to_json
 from .helpers.psutil_helper import psutil_dict
-from .helpers.user_preferences import sampling_interval, sliding_window_size
+from preferences import sampling_interval, sliding_window_size
 import time
 import datetime
 
