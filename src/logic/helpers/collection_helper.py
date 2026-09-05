@@ -15,3 +15,17 @@ def extract_relevant_parameters(parameters:dict) -> list:
     validate_parameters(requested_parameters_list)
     return requested_parameters_list
 
+
+def network_helper(network_data:list, new_data:float) -> tuple[float,list]:
+  if network_data == []:
+    last = new_data
+  else:
+    last = network_data[-1]
+  network_data.append(new_data)
+  return round(new_data - last,2), network_data
+
+def init_network()->dict:
+  return {
+       "Network sent": [],
+       "Network received": []
+    }

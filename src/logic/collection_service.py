@@ -1,5 +1,5 @@
 from .base_service import BaseService
-from .helpers.collection_helper import extract_relevant_parameters
+from .helpers.collection_helper import extract_relevant_parameters, network_helper, init_network
 from .helpers.json_helper import dict_to_json
 from .helpers.psutil_helper import psutil_dict
 from preferences import sampling_interval, sliding_window_size
@@ -12,6 +12,7 @@ class CollectionService(BaseService):
     super().__init__()
     self.__requested_parameters = extract_relevant_parameters(requested_parameters)
     self._sampling_interval = sampling_interval
+    self.__network_data = init_network()
 
 ################################################
 #CollectionService thread methods
@@ -27,6 +28,8 @@ class CollectionService(BaseService):
 
     for item in self.__requested_parameters:
           item_value = psutil_dict[item]()
+          if item == "Network sent" or item == "Network received":
+             item_value, self.__network_data[item] = network_helper(self.__network_data[item], item_value)
           if not isinstance(item_value,(float, int)):
              raise TypeError("Mertric value must be a number, psutil library error")
           if item_value < 0:

@@ -10,7 +10,9 @@ sliding_window_size=15
 #sampling parameters
 parameters_dict={
   "CPU usage":True,
-  "RAM usage":True
+  "RAM usage":True,
+   "Network sent" : True,
+  "Network received" : True
 }
 
 ################################################
