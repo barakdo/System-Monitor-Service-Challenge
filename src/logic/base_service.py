@@ -11,7 +11,7 @@ class BaseService(threading.Thread):
     self._stop_event = threading.Event()
 
 ################################################
-#Executable methods by BaseService thread
+#BaseService thread methods
 ################################################
   def run(self):
     while True:
@@ -24,7 +24,7 @@ class BaseService(threading.Thread):
     raise NotImplementedError("run_service method is not implemented for this sub service")
 
 ################################################
-#Executable methods by main thread
+#Main thread methods
 ################################################
   def stop(self):
     self._stop_event.set()

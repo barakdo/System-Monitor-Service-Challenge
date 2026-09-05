@@ -14,7 +14,7 @@ class CollectionService(BaseService):
     self._sampling_interval = sampling_interval
 
 ################################################
-#Executable methods by CollectionService thread
+#CollectionService thread methods
 ################################################
   def collect_system_data(self) -> dict:
     data_dict = {}
