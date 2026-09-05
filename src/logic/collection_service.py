@@ -14,7 +14,7 @@ class CollectionService(BaseService):
     self._sampling_interval = sampling_interval
 
 ################################################
-#Executable methods by CollectionService thread
+#CollectionService thread methods
 ################################################
   def collect_system_data(self) -> dict:
     data_dict = {}
@@ -28,7 +28,7 @@ class CollectionService(BaseService):
     for item in self.__requested_parameters:
           item_value = psutil_dict[item]()
           if not isinstance(item_value,(float, int)):
-             raise TypeError("Mertric value must be a number")
+             raise TypeError("Mertric value must be a number, psutil library error")
           if item_value < 0:
              raise ValueError(f"All relevant metrics values must be non negative. Current value: [{item_value}]")
           data_dict[item] = item_value

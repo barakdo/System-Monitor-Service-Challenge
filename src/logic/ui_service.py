@@ -12,7 +12,7 @@ class UIService(PresentationService):
     self._condition_ui = threading.Condition() #ensures access to _system_data dict is safe
 
 ################################################
-#Executable methods by UIService thread
+#UIService thread methods
 ################################################
   def __process_history_data(self,new_system_data:dict):
     with self._condition_ui:
@@ -28,7 +28,7 @@ class UIService(PresentationService):
     BaseService.stop(self)
 
 ################################################
-#Executable methods by main thread
+#Main thread methods
 ################################################
   def __user_closed_graph(self, event):
     BaseService.stop(self)

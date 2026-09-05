@@ -11,11 +11,11 @@ def sample_ram() -> float:
 #psutil functions router
 
 psutil_dict = {
-  "CPU_usage": sample_cpu,
-  "RAM_usage" : sample_ram
+  "CPU usage": sample_cpu,
+  "RAM usage" : sample_ram
 }
 
 unit_dict ={
-  "CPU_usage": "%",
-  "RAM_usage" :"GB"
+  "CPU usage": "%",
+  "RAM usage" :"GB"
 }

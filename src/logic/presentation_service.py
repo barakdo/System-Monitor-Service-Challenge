@@ -7,7 +7,7 @@ class PresentationService(BaseService):
     super().__init__()
 
 ################################################
-#Executable methods by PresentationService thread
+#PresentationService thread methods
 ################################################
   def __read_from_queue(self)->str:
       with self._q_not_empty_condition:
