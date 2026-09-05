@@ -10,7 +10,6 @@ class BaseService(threading.Thread):
     super().__init__()
     self._stop_event = threading.Event()
 
-
 ################################################
 #Executable methods by BaseService thread
 ################################################

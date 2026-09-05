@@ -1,6 +1,5 @@
 from preferences import *
 
-
 def validate_user_preferences():
   if task_number not in [1,2]:
     raise ValueError("<task_number> must be set to 1 or 2")

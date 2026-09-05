@@ -50,12 +50,10 @@ def create_graph(system_data:dict):
   plt.show()
   return fig, axs
 
-
 def add_values_on_points(ax,key:list,value:list):
-    for x,y in zip(key, value):                                       # <--
+    for x,y in zip(key, value):                                     
             ax.text(x, y, y, fontsize=16, fontweight='bold',verticalalignment='center',horizontalalignment='center',color="white",path_effects=[pe.withStroke(linewidth=2, foreground="black")])
     
-
 def update_graph(system_data, axs):
   count = 0
   for key,value in system_data.items():
@@ -75,7 +73,6 @@ def update_graph(system_data, axs):
       ax.set_yticklabels(modified_y_labels)
       if points_value_label:
         add_values_on_points(ax,system_data["Time"], value)
-      
       count+=1
   plt.pause(0.1)
 

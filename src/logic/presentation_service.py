@@ -3,7 +3,6 @@ from .helpers.presentation_helper import print_to_console
 from .helpers.json_helper import json_to_dict
 
 class PresentationService(BaseService):
-
   def __init__(self):
     super().__init__()
 

@@ -6,7 +6,6 @@ from preferences import task_number, sliding_window_size, sampling_interval, par
 
 
 def task():
-
   requested_parameters = parameters_dict
   event = threading.Event()
 
