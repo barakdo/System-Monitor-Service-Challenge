@@ -1,10 +1,7 @@
 from .base_service import BaseService
-from .helpers.collection_helper import extract_relevant_parameters, network_helper, init_network
+from .helpers.collection_helper import extract_relevant_parameters, init_network, sample_time, add_sampled_parameters
 from .helpers.json_helper import dict_to_json
-from .helpers.psutil_helper import psutil_dict
-from preferences import sampling_interval, sliding_window_size
 import time
-import datetime
 
 class CollectionService(BaseService):
 
@@ -18,23 +15,8 @@ class CollectionService(BaseService):
 #CollectionService thread methods
 ################################################
   def collect_system_data(self) -> dict:
-    data_dict = {}
-    if sampling_interval >= 1:
-      data_dict["Time"] = datetime.datetime.now().strftime("%H:%M:%S")
-    else:
-      data_dict["Time"] = datetime.datetime.now().strftime("%H:%M:%S:%f")[:-5]
-    if sliding_window_size > 15:
-       data_dict["Time"] = data_dict["Time"][3:]
-
-    for item in self.__requested_parameters:
-          item_value = psutil_dict[item]()
-          if item == "Network sent" or item == "Network received":
-             item_value, self.__network_data[item] = network_helper(self.__network_data[item], item_value)
-          if not isinstance(item_value,(float, int)):
-             raise TypeError("Mertric value must be a number, psutil library error")
-          if item_value < 0:
-             raise ValueError(f"All relevant metrics values must be non negative. Current value: [{item_value}]")
-          data_dict[item] = item_value
+    data_dict = sample_time()
+    data_dict = add_sampled_parameters(data_dict, self.__requested_parameters,self.__network_data)
     return data_dict
 
   def write_to_queue(self, item:str):
