@@ -2,7 +2,9 @@ from .base_service import BaseService
 from .helpers.collection_helper import extract_relevant_parameters
 from .helpers.json_helper import dict_to_json
 from .helpers.psutil_helper import psutil_dict
+from preferences import sampling_interval, sliding_window_size
 import time
+import datetime
 
 class CollectionService(BaseService):
 
@@ -11,9 +13,18 @@ class CollectionService(BaseService):
     self.__requested_parameters = extract_relevant_parameters(requested_parameters)
     self._sampling_interval = sampling_interval
 
-    
+################################################
+#Executable methods by CollectionService thread
+################################################
   def collect_system_data(self) -> dict:
     data_dict = {}
+    if sampling_interval >= 1:
+      data_dict["Time"] = datetime.datetime.now().strftime("%H:%M:%S")
+    else:
+      data_dict["Time"] = datetime.datetime.now().strftime("%H:%M:%S:%f")[:-5]
+    if sliding_window_size > 15:
+       data_dict["Time"] = data_dict["Time"][3:]
+
     for item in self.__requested_parameters:
           item_value = psutil_dict[item]()
           if not isinstance(item_value,(float, int)):
@@ -26,9 +37,9 @@ class CollectionService(BaseService):
   def write_to_queue(self, item:str):
         if not isinstance(item, str):
            raise TypeError(f"The queue only accepts strings. [{item}] is not a string")
-        with self._condition:
+        with self._q_not_empty_condition:
           self._q.put(item)
-          self._condition.notify()
+          self._q_not_empty_condition.notify()
 
   def run_service(self):
     system_data = self.collect_system_data()
