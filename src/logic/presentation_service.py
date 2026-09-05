@@ -7,9 +7,12 @@ class PresentationService(BaseService):
   def __init__(self):
     super().__init__()
 
+################################################
+#Executable methods by PresentationService thread
+################################################
   def __read_from_queue(self)->str:
-      with self._condition:
-        self._condition.wait_for(lambda:not self._q.empty() or self._stop_event.is_set())
+      with self._q_not_empty_condition:
+        self._q_not_empty_condition.wait()
         if self._stop_event.is_set():
           return "{}"
         if self._q.empty():
@@ -22,7 +25,6 @@ class PresentationService(BaseService):
       raise TypeError(f"System data read from queue must be a string, given [{system_data_json}]")
     return json_to_dict(system_data_json)
       
-  
   def run_service(self):
     system_data = self.get_process_data()
     if not self._stop_event.is_set():

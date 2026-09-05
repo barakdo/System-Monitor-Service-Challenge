@@ -2,12 +2,12 @@ import threading
 from .logic.collection_service import CollectionService
 from .logic.presentation_service import PresentationService
 from .logic.ui_service import UIService
-from .logic.helpers.user_preferences import parameters_dict, sampling_interval
-from .logic.helpers.user_preferences import task_number, sliding_window_size, sampling_interval
+from .logic.helpers.user_preferences import task_number, sliding_window_size, sampling_interval, parameters_dict, validate_user_preferences
 import time
 
 
 def task():
+  validate_user_preferences()
 
   requested_parameters = parameters_dict
   event = threading.Event()
@@ -28,7 +28,7 @@ def task():
   #running until user press ctrl+c
   try:
     if task_number == 2:
-      ps.print_graphs()
+      ps.display_graphs()
     event.wait()
   except KeyboardInterrupt:
     #stopping threads
