@@ -1,3 +1,16 @@
+# Edit:
+## Instructions for running the program:
+
+1. Create and active a environment (currently supports Linux).
+2. install the requirements.
+3. configure relevant parameters in preferences.py.
+4. run main.py.
+
+___
+## System monitor screenshot
+
+<img src="media/system monitor screenshot.png" width="600" alt="System monitor screenshot">
+
 # System-Monitor-Service-Challenge
 This challenge involves creating a system resource monitor similar to the graphs displayed in Windows task manager (can be done similarly for Mac or Linux). The objective is to develop a service class that can run multiple services on individual threads, collect system information on one service, and present it graphically with another service.
 
