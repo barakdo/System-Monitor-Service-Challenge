@@ -1,5 +1,5 @@
 from .base_service import BaseService
-from .helpers.collection_helper import extract_relevant_parameters, init_network, sample_time, add_sampled_parameters
+from .helpers.collection_helper import extract_relevant_parameters, init_difference_dict, sample_time, add_sampled_parameters
 from .helpers.json_helper import dict_to_json
 import time
 
@@ -9,14 +9,14 @@ class CollectionService(BaseService):
     super().__init__()
     self.__requested_parameters = extract_relevant_parameters(requested_parameters)
     self._sampling_interval = sampling_interval
-    self.__network_data = init_network()
+    self.__difference_data = init_difference_dict(self.__requested_parameters)
 
 ################################################
 #CollectionService thread methods
 ################################################
   def collect_system_data(self) -> dict:
-    data_dict = sample_time()
-    data_dict = add_sampled_parameters(data_dict, self.__requested_parameters,self.__network_data)
+    data_dict = sample_time(self.__requested_parameters)
+    data_dict = add_sampled_parameters(data_dict, self.__requested_parameters,self.__difference_data)
     return data_dict
 
   def write_to_queue(self, item:str):

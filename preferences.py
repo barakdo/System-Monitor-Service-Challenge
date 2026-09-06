@@ -11,8 +11,10 @@ sliding_window_size=15
 parameters_dict={
   "CPU usage":True,
   "RAM usage":True,
-   "Network sent" : True,
-  "Network received" : True
+  "Network sent" : True,
+  "Network received" : True,
+  "Swap memory in": True,
+  "Swap memory out" : True
 }
 
 ################################################
