@@ -1,5 +1,5 @@
 #set <task> parameter to 1 or 2
-task_number = 2
+task_number = 1
 
 #set system data sampling rate in seconds, at least 0.2 seconds
 sampling_interval = 1
