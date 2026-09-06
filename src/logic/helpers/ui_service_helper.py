@@ -9,7 +9,6 @@ from preferences import points_value_label
 #System data related functions
 ################################################
 
-
 def update_system_data(old_system_data:dict,new_system_data, received_sample_first_time:threading.Event,sliding_window_size:int):
   if not isinstance(new_system_data,dict):
     raise TypeError(f"<new_system_data> must be a dict, currently {type(new_system_data)}")
@@ -33,17 +32,37 @@ def init_system_data(system_data:dict):
     return new_system_data
 
 
-
-
 ################################################
 #Graph related functions
 ################################################
 
+def calc_axs_size(num):
+  if num < 1:
+     raise ValueError("No parameters to display")
+  if num <= 4:
+    return num,1
+  return 4, (num//4)+1
+
+def remove_unrelevant_axes(num_of_parameters:int, fig, axs):
+   size_r,size_c=axs.shape
+   count = size_r*size_c - num_of_parameters
+   current_row = size_r -1 
+   current_col = size_c - 1
+   for i in range(count):
+      fig.delaxes(axs[current_row][current_col])
+      current_row -= 1
+      if current_row == -1:
+         current_row = size_r -1 
+         current_col -= 1
+   
 def create_graph(system_data:dict):
   parameters_count = len(system_data) - 1 # Time is part of dict
   plt.style.use('https://github.com/dhaitz/matplotlib-stylesheets/raw/master/pitayasmoothie-dark.mplstyle')
   plt.ion()
-  fig, axs = plt.subplots(parameters_count,1, figsize=(25,parameters_count*5))
+  rows,cols = calc_axs_size(parameters_count)
+  fig, axs = plt.subplots(rows,cols, figsize=(10+12*cols,rows*4 + 2),squeeze=False)
+  if parameters_count > 4:
+    remove_unrelevant_axes(parameters_count, fig,axs)
   fig.canvas.manager.set_window_title('System Monitor')
   plt.subplots_adjust(hspace=0.5)
   plt.rc('font', size=16) 
@@ -55,17 +74,15 @@ def add_values_on_points(ax,key:list,value:list):
             ax.text(x, y, y, fontsize=16, fontweight='bold',verticalalignment='center',horizontalalignment='center',color="white",path_effects=[pe.withStroke(linewidth=2, foreground="black")])
     
 def update_graph(system_data, axs):
-  count = 0
+  row = 0
+  col = 0
   for key,value in system_data.items():
     if key != "Time":
-      if len(system_data) == 2:
-        ax = axs
-      else:
-        ax = axs[count]
+      ax = axs[row][col]
       ax.clear()
       ax.set_title(key)
-      ax.set_xlabel('Time', fontsize=16)   
-      lines = ax.plot(system_data["Time"], value)
+      ax.set_xlabel('Time', fontsize=16)  
+      ax.plot(system_data["Time"], value) 
       y_label = ax.get_yticklabels()
       float_values = [label.get_position()[1] for label in y_label]
       modified_y_labels = [label.get_text() + unit_dict[key] for label in y_label]
@@ -73,7 +90,10 @@ def update_graph(system_data, axs):
       ax.set_yticklabels(modified_y_labels)
       if points_value_label:
         add_values_on_points(ax,system_data["Time"], value)
-      count+=1
+      row+=1
+      if row ==4:
+          row= 0
+          col+=1
   plt.pause(0.1)
 
 
